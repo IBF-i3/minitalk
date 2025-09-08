@@ -6,7 +6,7 @@
 /*   By: ibenaven <ibenaven@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 10:26:42 by ibenaven          #+#    #+#             */
-/*   Updated: 2025/09/08 03:19:54 by ibenaven         ###   ########.fr       */
+/*   Updated: 2025/09/08 12:54:57 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,23 @@
 #  define BUFFER_SIZE 8192
 # endif
 
-/* messages */
 # define MSG_USAGE_SERVER     "Usage: ./server\n"
 # define MSG_USAGE_CLIENT     "Usage: ./client <pid> <message>\n"
 # define MSG_INVALID_PID      "Invalid PID\n"
 # define MSG_SIGACTION_ERR    "Error: sigaction()\n"
 # define MSG_SERVER_UNREACH   "Server not reachable.\n"
 # define MSG_SERVER_BUSY      "Sorry server busy, try again later.\n"
+
+/* messages */
+typedef enum s_err_msg
+{
+	USAGE_SERVER,  
+	USAGE_CLIENT,  
+	INVALID_PID,   
+	SIGACTION_ERR, 
+	SERVER_UNREACH,
+	SERVER_BUSY    
+}	t_err_msg;
 
 /* server state */
 typedef struct s_server_state

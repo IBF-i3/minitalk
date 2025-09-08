@@ -6,7 +6,7 @@
 /*   By: ibenaven <ibenaven@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 10:25:59 by ibenaven          #+#    #+#             */
-/*   Updated: 2025/09/08 01:00:48 by ibenaven         ###   ########.fr       */
+/*   Updated: 2025/09/08 12:56:07 by ivmirand         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,14 @@ static void	print_server_pid(void)
 int	main(int argc, char *argv[])
 {
 	struct sigaction	sa;
+	t_err_msg			error;
 
 	(void)argv;
 	if (argc != 1)
 	{
-		ft_putstr_fd(MSG_USAGE_SERVER, STDERR_FILENO);
+		error = USAGE_SERVER;
+		if (error == USAGE_SERVER)
+			ft_putstr_fd(MSG_USAGE_SERVER, STDERR_FILENO);
 		return (1);
 	}
 	print_server_pid();
@@ -36,7 +39,9 @@ int	main(int argc, char *argv[])
 	if (sigaction(SIGNAL_DATA_BIT0, &sa, NULL) == -1
 		|| sigaction(SIGNAL_DATA_BIT1, &sa, NULL) == -1)
 	{
-		ft_putstr_fd(MSG_SIGACTION_ERR, STDERR_FILENO);
+		error = SIGACTION_ERR;
+		if (error == SIGACTION_ERR)
+			ft_putstr_fd(MSG_SIGACTION_ERR, STDERR_FILENO);
 		return (1);
 	}
 	while (1)
