@@ -6,7 +6,7 @@
 /*   By: ibenaven <ibenaven@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 10:25:28 by ibenaven          #+#    #+#             */
-/*   Updated: 2025/09/07 23:39:12 by ibenaven         ###   ########.fr       */
+/*   Updated: 2025/09/08 13:25:17 by ibenaven         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,11 @@ static int	pid_validation(const char *str)
 void	parse_error(int status)
 {
 	if (status == 1)
-		ft_putstr_fd(MSG_USAGE_CLIENT, STDERR_FILENO);
+		ft_putendl_fd(MSG_USAGE_CLIENT, STDERR_FILENO);
 	else if (status == 2)
-		ft_putstr_fd(MSG_INVALID_PID, STDERR_FILENO);
+		ft_putendl_fd(MSG_INVALID_PID, STDERR_FILENO);
 	else if (status == 3)
-		ft_putstr_fd(MSG_SERVER_UNREACH, STDERR_FILENO);
+		ft_putendl_fd(MSG_SERVER_UNREACH, STDERR_FILENO);
 }
 
 int	parse_args(int argc, char *argv[],

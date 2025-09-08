@@ -6,7 +6,7 @@
 /*   By: ibenaven <ibenaven@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 10:25:59 by ibenaven          #+#    #+#             */
-/*   Updated: 2025/09/08 01:00:48 by ibenaven         ###   ########.fr       */
+/*   Updated: 2025/09/08 13:26:33 by ibenaven         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	main(int argc, char *argv[])
 	(void)argv;
 	if (argc != 1)
 	{
-		ft_putstr_fd(MSG_USAGE_SERVER, STDERR_FILENO);
+		ft_putendl_fd(MSG_USAGE_SERVER, STDERR_FILENO);
 		return (1);
 	}
 	print_server_pid();
@@ -36,7 +36,7 @@ int	main(int argc, char *argv[])
 	if (sigaction(SIGNAL_DATA_BIT0, &sa, NULL) == -1
 		|| sigaction(SIGNAL_DATA_BIT1, &sa, NULL) == -1)
 	{
-		ft_putstr_fd(MSG_SIGACTION_ERR, STDERR_FILENO);
+		ft_putendl_fd(MSG_SIGACTION_ERR, STDERR_FILENO);
 		return (1);
 	}
 	while (1)

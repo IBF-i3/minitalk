@@ -6,7 +6,7 @@
 /*   By: ibenaven <ibenaven@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 10:26:42 by ibenaven          #+#    #+#             */
-/*   Updated: 2025/09/08 03:19:54 by ibenaven         ###   ########.fr       */
+/*   Updated: 2025/09/08 13:24:09 by ibenaven         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,12 @@
 # endif
 
 /* messages */
-# define MSG_USAGE_SERVER     "Usage: ./server\n"
-# define MSG_USAGE_CLIENT     "Usage: ./client <pid> <message>\n"
-# define MSG_INVALID_PID      "Invalid PID\n"
-# define MSG_SIGACTION_ERR    "Error: sigaction()\n"
-# define MSG_SERVER_UNREACH   "Server not reachable.\n"
-# define MSG_SERVER_BUSY      "Sorry server busy, try again later.\n"
+# define MSG_USAGE_SERVER     "Usage: ./server"
+# define MSG_USAGE_CLIENT     "Usage: ./client <pid> <message>"
+# define MSG_INVALID_PID      "Invalid PID"
+# define MSG_SIGACTION_ERR    "Error: sigaction()"
+# define MSG_SERVER_UNREACH   "Server not reachable."
+# define MSG_SERVER_BUSY      "Sorry server busy, try again later."
 
 /* server state */
 typedef struct s_server_state
