@@ -62,22 +62,45 @@ void	handle_client_signal(int signo, siginfo_t *info, void *context)
 
 	(void)context;
 	sender_pid = info->si_pid;
+	
+	/* Check if current client is dead and cleanup if needed */
 	if (state.active_sender_pid != 0 && kill(state.active_sender_pid, 0) == -1)
 	{
 		ft_putendl_fd(MSG_SERVER_CLEANUP, STDERR_FILENO);
 		reset_server_state(&state);
 	}
+	
+	/* If no active client, accept this one */
 	if (state.active_sender_pid == 0)
 		init_server_state(&state, sender_pid);
+	
+	/* Reject signals from non-active clients */
 	if (sender_pid != state.active_sender_pid)
 	{
-		kill(sender_pid, SIGNAL_CONTROL_BUSY);
+		/* Send busy signal to non-active client */
+		if (kill(sender_pid, SIGNAL_CONTROL_BUSY) == -1)
+		{
+			/* If kill fails, the client might be dead, ignore */
+		}
 		return ;
 	}
+	
+	/* Process bit from active client */
 	if (signo == SIGNAL_DATA_BIT1)
 		state.building_byte |= (1u << state.bit_index);
+	
 	state.bit_index++;
-	kill(sender_pid, SIGNAL_CONTROL_ACK);
+	
+	/* Send ACK to active client */
+	if (kill(sender_pid, SIGNAL_CONTROL_ACK) == -1)
+	{
+		/* Client died while we were processing - cleanup */
+		ft_putendl_fd(MSG_SERVER_CLEANUP, STDERR_FILENO);
+		reset_server_state(&state);
+		return ;
+	}
+	
+	/* Check if we completed a byte */
 	if (state.bit_index == 8)
 		handle_full_byte(&state);
 }
