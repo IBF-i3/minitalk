@@ -6,7 +6,7 @@
 /*   By: ibenaven <ibenaven@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 10:25:28 by ibenaven          #+#    #+#             */
-/*   Updated: 2025/09/09 03:16:37 by ibenaven         ###   ########.fr       */
+/*   Updated: 2025/09/09 03:44:04 by ibenaven         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,14 +41,15 @@ int	install_client_handlers(void)
 
 int	wait_ack_or_busy(void)
 {
-	int	timeout_counter = 0;
-	const int	MAX_TIMEOUT = 5000;
-	
+	int			timeout_counter;
+	const int	max_timeout = 5000;
+
+	timeout_counter = 0;
 	while (g_client_sync == 0)
 	{
 		usleep(1000);
 		timeout_counter++;
-		if (timeout_counter > MAX_TIMEOUT)
+		if (timeout_counter > max_timeout)
 		{
 			return (-1);
 		}

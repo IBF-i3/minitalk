@@ -6,7 +6,7 @@
 /*   By: ibenaven <ibenaven@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 10:25:59 by ibenaven          #+#    #+#             */
-/*   Updated: 2025/09/09 03:29:44 by ibenaven         ###   ########.fr       */
+/*   Updated: 2025/09/09 04:22:39 by ibenaven         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,14 @@
 static void	reset_server_state(t_server_state *state)
 {
 	state->active_sender_pid = 0;
+	state->bit_index = 0;
+	state->building_byte = 0;
+	state->buffer_len = 0;
+}
+
+static void	init_server_state(t_server_state *state, pid_t sender_pid)
+{
+	state->active_sender_pid = sender_pid;
 	state->bit_index = 0;
 	state->building_byte = 0;
 	state->buffer_len = 0;
@@ -54,21 +62,13 @@ void	handle_client_signal(int signo, siginfo_t *info, void *context)
 
 	(void)context;
 	sender_pid = info->si_pid;
-	if (state.active_sender_pid != 0)
+	if (state.active_sender_pid != 0 && kill(state.active_sender_pid, 0) == -1)
 	{
-		if (kill(state.active_sender_pid, 0) == -1)
-		{
-			write(STDERR_FILENO, "\n[Server] Cleaning up dead client\n", 35);
-			reset_server_state(&state);
-		}
+		ft_putendl_fd(MSG_SERVER_CLEANUP, STDERR_FILENO);
+		reset_server_state(&state);
 	}
 	if (state.active_sender_pid == 0)
-	{
-		state.active_sender_pid = sender_pid;
-		state.bit_index = 0;
-		state.building_byte = 0;
-		state.buffer_len = 0;
-	}
+		init_server_state(&state, sender_pid);
 	if (sender_pid != state.active_sender_pid)
 	{
 		kill(sender_pid, SIGNAL_CONTROL_BUSY);
