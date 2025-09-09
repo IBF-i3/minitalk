@@ -6,13 +6,12 @@
 /*   By: ibenaven <ibenaven@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 10:25:28 by ibenaven          #+#    #+#             */
-/*   Updated: 2025/09/09 03:44:04 by ibenaven         ###   ########.fr       */
+/*   Updated: 2025/09/09 22:21:17 by ibenaven         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-/* -1=BUSY, 0=wait, +1=ACK */
 static volatile sig_atomic_t	g_client_sync = 0;
 
 static void	control_handler(int signo)
@@ -39,23 +38,26 @@ int	install_client_handlers(void)
 	return (0);
 }
 
-int	wait_ack_or_busy(void)
+int	wait_ack_or_busy(pid_t server_pid)
 {
-	int			timeout_counter;
-	const int	max_timeout = 5000;
+	int			waited_ms;
+	const int	soft_timeout_ms = 300;
 
-	timeout_counter = 0;
+	waited_ms = 0;
 	while (g_client_sync == 0)
 	{
-		usleep(1000);
-		timeout_counter++;
-		if (timeout_counter > max_timeout)
-		{
+		if (kill(server_pid, 0) == -1)
 			return (-1);
-		}
+		usleep(1000);
+		waited_ms++;
+		if (waited_ms >= soft_timeout_ms)
+			return (1);
 	}
 	if (g_client_sync < 0)
-		return (-1);
+	{
+		g_client_sync = 0;
+		return (1);
+	}
 	g_client_sync = 0;
 	return (0);
 }

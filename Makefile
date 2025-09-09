@@ -6,7 +6,7 @@
 #    By: ibenaven <ibenaven@student.42madrid.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/23 15:42:55 by ibenaven          #+#    #+#              #
-#    Updated: 2025/09/08 00:57:12 by ibenaven         ###   ########.fr        #
+#    Updated: 2025/09/09 20:50:30 by ibenaven         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -76,21 +76,6 @@ fclean: clean
 	rm -f $(NAME_CLIENT)
 
 re: fclean all
-
-run:
-	@make -s --no-print-directory all
-	@tmp=$$(mktemp); \
-	arg='$(ARG)'; \
-	echo "$$arg" > "$(ARGFILE)"; \
-	echo "Saved ARG to $(ARGFILE)"; \
-	./$(NAME) $$arg > "$$tmp" || true; \
-	diff=$$($(CHECKER) $$arg < "$$tmp"); \
-	echo "Checker output: $$diff"; \
-	echo -n "Number of instructions: "; wc -l < "$$tmp"; \
-	read -p "Save output to '$(OUTFILE)'? [y/N] " ans; \
-	if [[ $$ans =~ ^[Yy]$$ ]]; \
-	then mv "$$tmp" "$(OUTFILE)" && echo "Saved"; \
-	else rm -f "$$tmp" && echo "Not saved"; fi
 
 debug: libft $(OBJS_SERVER) $(OBJS_CLIENT) $(LIBFT_A) 
 	$(COMPILER) $(COMPILERFLAGS) $(DEBUGFLAGS) $(OBJS_SERVER) $(OBJS_CLIENT) $(LIBFT_A) -o test

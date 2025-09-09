@@ -6,7 +6,7 @@
 /*   By: ibenaven <ibenaven@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 10:25:59 by ibenaven          #+#    #+#             */
-/*   Updated: 2025/09/09 16:15:06 by ibenaven         ###   ########.fr       */
+/*   Updated: 2025/09/09 22:22:32 by ibenaven         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,8 @@ void	handle_client_signal(int signo, siginfo_t *info, void *context)
 	sender_pid = info->si_pid;
 	if (state.active_sender_pid != 0 && kill(state.active_sender_pid, 0) == -1)
 	{
-		write(STDERR_FILENO, MSG_SERVER_CLEANUP, 35);
+		write(STDERR_FILENO, MSG_SERVER_CLEANUP,
+			sizeof(MSG_SERVER_CLEANUP) - 1);
 		reset_server_state(&state);
 	}
 	if (state.active_sender_pid == 0)

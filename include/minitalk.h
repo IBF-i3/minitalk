@@ -6,7 +6,7 @@
 /*   By: ibenaven <ibenaven@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 10:26:42 by ibenaven          #+#    #+#             */
-/*   Updated: 2025/09/09 16:17:47 by ibenaven         ###   ########.fr       */
+/*   Updated: 2025/09/09 20:15:56 by ibenaven         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@
 # define MSG_INVALID_PID      "Invalid PID"
 # define MSG_SIGACTION_ERR    "Error: sigaction()"
 # define MSG_SERVER_UNREACH   "Server not reachable."
-# define MSG_SERVER_BUSY      "Sorry server busy, try again later."
-# define MSG_SERVER_CLEANUP   "\n[Server] Cleaning up dead client.\n"
+# define MSG_SERVER_BUSY      "Sorry server busy, try again.\n"
+# define MSG_SERVER_CLEANUP   "\n[SERVER] Cleaning up dead client.\n"
 
 /* server state */
 typedef struct s_server_state
@@ -58,7 +58,7 @@ void	handle_client_signal(int signo, siginfo_t *info, void *context);
 int		parse_args(int argc, char **argv,
 			pid_t *out_server_pid, const char **out_message);
 int		install_client_handlers(void);
-int		wait_ack_or_busy(void);
+int		wait_ack_or_busy(pid_t server_pid);
 int		send_message(pid_t server_pid, const char *message);
 
 #endif
