@@ -6,7 +6,7 @@
 /*   By: ibenaven <ibenaven@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 10:26:42 by ibenaven          #+#    #+#             */
-/*   Updated: 2025/09/09 03:50:40 by ibenaven         ###   ########.fr       */
+/*   Updated: 2025/09/09 16:17:47 by ibenaven         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@
 # define MSG_SIGACTION_ERR    "Error: sigaction()"
 # define MSG_SERVER_UNREACH   "Server not reachable."
 # define MSG_SERVER_BUSY      "Sorry server busy, try again later."
-# define MSG_SERVER_CLEANUP   "\n[Server] Cleaning up dead client."
+# define MSG_SERVER_CLEANUP   "\n[Server] Cleaning up dead client.\n"
 
 /* server state */
 typedef struct s_server_state
