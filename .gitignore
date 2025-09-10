@@ -65,7 +65,7 @@ dkms.conf
 *.txt
 
 # Gitignore
-#.gitignore
+.gitignore
 
 # Programs
 test

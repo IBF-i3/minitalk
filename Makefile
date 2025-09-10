@@ -6,7 +6,7 @@
 #    By: ibenaven <ibenaven@student.42madrid.com>   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/23 15:42:55 by ibenaven          #+#    #+#              #
-#    Updated: 2025/09/09 20:50:30 by ibenaven         ###   ########.fr        #
+#    Updated: 2025/09/10 09:32:54 by ibenaven         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,11 +32,19 @@ LIBFT_A	:= $(LIBFT)/libft.a
 INCLUDE := -Iinclude -I$(LIBFT)/include
 
 COMPILER		:= cc
-COMPILERFLAGS	:= -Wextra -Wall -Werror	 
-VALGRIND_OPTS	:= \
-				--leak-check=full \
-				--show-leak-kinds=all \
-				-s
+COMPILERFLAGS	?= -Wextra -Wall -Werror	 
+
+SHELL := /bin/bash
+
+ifeq ($(DEBUG), 1)
+COMPILERFLAGS	+= -g
+endif	 
+
+VG		:= valgrind
+VGFLAGS	:= \
+		--leak-check=full \
+		--show-leak-kinds=all \
+		-s
 
 OUTPUT_SERVER	:= src/server/output
 OUTPUT_CLIENT	:= src/client/output
@@ -77,11 +85,15 @@ fclean: clean
 
 re: fclean all
 
-debug: libft $(OBJS_SERVER) $(OBJS_CLIENT) $(LIBFT_A) 
-	$(COMPILER) $(COMPILERFLAGS) $(DEBUGFLAGS) $(OBJS_SERVER) $(OBJS_CLIENT) $(LIBFT_A) -o test
-	 
-leaks: debug
-	valgrind $(VALGRIND_OPTS) ./test $(ARG)
-	rm -f test
+leaks_server:
+	make fclean && make DEBUG=1
+	$(VG) $(VGFLAGS) ./$(NAME_SERVER)
 
-.PHONY: all libft clean fclean re run debug leaks
+leaks_client:
+	@if [ -z "$(PID)" ] || [ -z "$(MSG)" ]; \
+	then echo "Usage: make leaks_client PID=<server_pid> MSG='text'"; \
+	exit 1; fi
+	make fclean && make DEBUG=1
+	$(VG) $(VGFLAGS) ./$(NAME_CLIENT) $(PID) "$(MSG)"
+
+.PHONY: all libft clean fclean re leaks_server leaks_client
