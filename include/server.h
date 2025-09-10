@@ -6,7 +6,7 @@
 /*   By: ibenaven <ibenaven@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 10:26:42 by ibenaven          #+#    #+#             */
-/*   Updated: 2025/09/10 04:03:01 by ibenaven         ###   ########.fr       */
+/*   Updated: 2025/09/10 04:33:18 by ibenaven         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 typedef struct s_server_state
 {
 	pid_t			active_sender_pid;
+	pid_t			waiting_pid;
 	int				bit_index;
 	unsigned char	building_byte;
 	size_t			buffer_len;
