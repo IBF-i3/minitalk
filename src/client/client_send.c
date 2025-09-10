@@ -6,11 +6,11 @@
 /*   By: ibenaven <ibenaven@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 10:25:28 by ibenaven          #+#    #+#             */
-/*   Updated: 2025/09/09 22:20:22 by ibenaven         ###   ########.fr       */
+/*   Updated: 2025/09/10 04:09:01 by ibenaven         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minitalk.h"
+#include "client.h"
 
 static void	notify_busy_once(int *busy_flag)
 {
@@ -34,12 +34,30 @@ static int	send_one_bit(pid_t server_pid, int bit_value)
 	return (0);
 }
 
-/* 0=ACK, 1=BUSY/soft, -1=dead */
+/* wait until ACK; on BUSY/soft-timeout -> backoff and resend the SAME bit */
+static int	resend_until_ack(pid_t server_pid, int bit_value, int *busy_flag)
+{
+	int	status;
+
+	while (1)
+	{
+		status = wait_ack_or_busy(server_pid);
+		if (status == CLIENT_WAIT_ACK)
+			return (0);
+		if (status == CLIENT_WAIT_SERVER_GONE)
+			return (-1);
+		if (status == CLIENT_WAIT_BUSY)
+			notify_busy_once(busy_flag);
+		usleep(CLIENT_BUSY_BACKOFF_US);
+		if (send_one_bit(server_pid, bit_value) == -1)
+			return (-1);
+	}
+}
+
 static int	send_byte_bits(pid_t server_pid, unsigned char byte, int *busy_flag)
 {
 	int	bit_index;
 	int	bit_value;
-	int	w;
 
 	bit_index = 0;
 	while (bit_index < 8)
@@ -47,18 +65,8 @@ static int	send_byte_bits(pid_t server_pid, unsigned char byte, int *busy_flag)
 		bit_value = (byte >> bit_index) & 1;
 		if (send_one_bit(server_pid, bit_value) == -1)
 			return (-1);
-		while (1)
-		{
-			w = wait_ack_or_busy(server_pid);
-			if (w == 0)
-				break ;
-			if (w < 0)
-				return (-1);
-			notify_busy_once(busy_flag);
-			usleep(200);
-			if (send_one_bit(server_pid, bit_value) == -1)
-				return (-1);
-		}
+		if (resend_until_ack(server_pid, bit_value, busy_flag) == -1)
+			return (-1);
 		bit_index++;
 	}
 	return (0);

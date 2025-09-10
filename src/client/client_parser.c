@@ -6,11 +6,11 @@
 /*   By: ibenaven <ibenaven@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 10:25:28 by ibenaven          #+#    #+#             */
-/*   Updated: 2025/09/08 13:25:17 by ibenaven         ###   ########.fr       */
+/*   Updated: 2025/09/10 04:06:34 by ibenaven         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minitalk.h"
+#include "client.h"
 
 static int	pid_validation(const char *str)
 {

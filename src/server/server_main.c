@@ -6,11 +6,11 @@
 /*   By: ibenaven <ibenaven@student.42madrid.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 10:25:59 by ibenaven          #+#    #+#             */
-/*   Updated: 2025/09/08 13:26:33 by ibenaven         ###   ########.fr       */
+/*   Updated: 2025/09/10 04:05:30 by ibenaven         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minitalk.h"
+#include "server.h"
 
 static void	print_server_pid(void)
 {
